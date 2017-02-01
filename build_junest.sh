@@ -40,15 +40,19 @@ JUNEST_TEMPDIR=${JUNEST_BUILDER}/tmp /opt/junest/bin/junest -b
 # Upload image
 for img in $(ls junest-*.tar.gz);
 do
-    droxi put -f -O /Public/junest ${img}
+    # Upload binary file
+    # The put is done via a temporary filename in order to prevent outage on the
+    # production file for a longer period of time.
+    cp ${img} ${img}.temp
+    droxi put -E -f -O /Public/junest ${img}.temp
+    droxi mv -f /Public/junest/${img}.temp /Public/junest/${img}
 done
 
 DATE=$(date +'%Y-%m-%d-%H-%M-%S')
 
 for img in $(ls junest-*.tar.gz);
 do
-    mv ${img} "${img}.${DATE}"
-    droxi put -E -f -O /Public/junest "${img}.${DATE}"
+    droxi cp -f /Public/junet/${img} /Public/junest/${img}.${DATE}
 done
 
 # Cleanup old images

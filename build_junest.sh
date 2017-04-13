@@ -2,7 +2,7 @@
 
 set -eu
 
-MAX_OLD_IMAGES=5
+MAX_OLD_IMAGES=30
 
 # ARCH can be one of: x86, x86_64, arm
 HOST_ARCH=$(uname -m)
@@ -44,16 +44,16 @@ do
     # The put is done via a temporary filename in order to prevent outage on the
     # production file for a longer period of time.
     cp ${img} ${img}.temp
-    droxi put -E -f -O /Public/junest ${img}.temp
-    droxi mv -f /Public/junest/${img}.temp /Public/junest/${img}
+    aws s3 cp ${img}.temp s3://junest-repo/junest/
+    aws s3 mv s3://junest-repo/junest/${img}.temp s3://junest-repo/junest/${img}
 done
 
 DATE=$(date +'%Y-%m-%d-%H-%M-%S')
 
 for img in $(ls junest-*.tar.gz);
 do
-    droxi cp -f /Public/junet/${img} /Public/junest/${img}.${DATE}
+    aws s3 cp ${img} s3://junest-repo/junest/${img}.${DATE}
 done
 
 # Cleanup old images
-droxi ls /Public/junest/junest-${ARCH}.tar.gz.* | sed 's/ .*$//' | head -n -${MAX_OLD_IMAGES} | xargs -I {} droxi rm "{}"
+aws s3 ls s3://junest-repo/junest/junest-${ARCH}.tar.gz. | awk '{print $4}' | head -n -${MAX_OLD_IMAGES} | xargs -I {} s3 rm "s3://junest-repo/junest/{}"

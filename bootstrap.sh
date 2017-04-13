@@ -5,14 +5,10 @@ set -eu
 # ArchLinux System initialization
 pacman --noconfirm -Syu
 pacman -S --noconfirm base-devel
-pacman -S --noconfirm git arch-install-scripts haveged
-useradd builder
-mkdir /home/builder
-chown builder /home/builder
-echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+pacman -S --noconfirm git arch-install-scripts haveged aws-cli
 
 cd /
-sudo -u builder bash << EOF
+sudo -u vagrant bash << EOF
 git config --global user.email "builder@junest.org"
 git config --global user.name "builder"
 
@@ -32,9 +28,11 @@ cd \${JUNEST_BUILDER_TMPDIR}/yaourt
 curl -L -J -O -k "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=yaourt"
 makepkg --noconfirm -sfc
 sudo pacman --noconfirm -U yaourt*.pkg.tar.xz
-yaourt -S --noconfirm droxi
-mkdir -p \${HOME}/.config/droxi
-cat /vagrant/droxirc > \${HOME}/.config/droxi/droxirc
+
+# AWS configuration
+mkdir -p \${HOME}/.aws
+cat /vagrant/aws-credentials > \${HOME}/.aws/credentials
+cat /vagrant/aws-config > \${HOME}/.aws/config
 
 sudo rm -rf \${JUNEST_BUILDER_TMPDIR}
 EOF

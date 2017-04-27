@@ -29,13 +29,13 @@ trap "sudo rm -rf ${JUNEST_BUILDER}" EXIT QUIT ABRT KILL TERM INT
 
 # ArchLinux System initialization
 sudo pacman -Syu --noconfirm
-yaourt -S --noconfirm junest-git
+git clone https://github.com/fsquillace/junest.git ${JUNEST_BUILDER}/junest
 
 sudo systemctl start haveged
 
 # Building JuNest image
 cd ${JUNEST_BUILDER}
-JUNEST_TEMPDIR=${JUNEST_BUILDER}/tmp /opt/junest/bin/junest -b
+JUNEST_TEMPDIR=${JUNEST_BUILDER}/tmp ${JUNEST_BUILDER}/junest/bin/junest -b
 
 # Upload image
 for img in $(ls junest-*.tar.gz);

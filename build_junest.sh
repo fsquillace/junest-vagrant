@@ -35,7 +35,7 @@ sudo systemctl start haveged
 
 # Building JuNest image
 cd ${JUNEST_BUILDER}
-JUNEST_TEMPDIR=${JUNEST_BUILDER}/tmp ${JUNEST_BUILDER}/junest/bin/junest -b
+JUNEST_TEMPDIR=${JUNEST_BUILDER}/tmp ${JUNEST_BUILDER}/junest/bin/junest build
 
 # Upload image
 for img in $(ls junest-*.tar.gz);

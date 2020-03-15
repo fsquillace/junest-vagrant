@@ -27,9 +27,13 @@ JUNEST_BUILDER=${HOME}/junest-builder
 mkdir -p ${JUNEST_BUILDER}/tmp
 trap "sudo rm -rf ${JUNEST_BUILDER}" EXIT QUIT ABRT KILL TERM INT
 
-# ArchLinux System initialization
-sudo pacman -Syu --noconfirm
-git clone https://github.com/fsquillace/junest.git ${JUNEST_BUILDER}/junest
+GIT_URL=https://github.com/fsquillace/junest.git
+GIT_BRANCH=master
+[[ -n "$1" ]] && GIT_URL="$1"
+[[ -n "$2" ]] && GIT_BRANCH="$2"
+
+echo "Cloning git repository to ${JUNEST_BUILDER}/junest"
+git clone --branch ${GIT_BRANCH} ${GIT_URL} ${JUNEST_BUILDER}/junest
 
 sudo systemctl start haveged
 

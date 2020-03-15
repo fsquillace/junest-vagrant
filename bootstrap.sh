@@ -3,10 +3,8 @@
 set -eu
 
 # ArchLinux System initialization
-pacman --noconfirm -Syu
-pacman -S --noconfirm base-devel
-# yajl is required for compiling package-query
-pacman -S --noconfirm git arch-install-scripts haveged aws-cli yajl
+sudo pacman -Syu --noconfirm
+pacman -S --noconfirm git haveged aws-cli
 
 cd /
 sudo -u vagrant bash << EOF

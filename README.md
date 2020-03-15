@@ -50,6 +50,7 @@ VAGRANT_VAGRANTFILE=Vagrantfile-$ARCH vagrant up --provider=$PROVIDER
 
 ## Build image
 
+Build image from the git repository:
 ```sh
-VAGRANT_VAGRANTFILE=Vagrantfile-$ARCH vagrant ssh -c /vagrant/build_junest.sh
+VAGRANT_VAGRANTFILE=Vagrantfile-$ARCH vagrant ssh -c "/vagrant/build_junest.sh [<url> <branch>]"
 ```

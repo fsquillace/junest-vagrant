@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "archlinux/archlinux"
   # For other versions see:
   # https://app.vagrantup.com/archlinux/boxes/archlinux
-  config.vm.box_version = "2020.02.04"
+  config.vm.box_version = "2020.08.12"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
